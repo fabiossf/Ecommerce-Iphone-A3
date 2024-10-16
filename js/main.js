@@ -9,7 +9,60 @@ const numerocartao = document.getElementById("numerocartao");
 const cvv = document.getElementById("cvv");
 const bandeiracartao = document.getElementsByClassName("bandeira-cartao")
 
+form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    
+    checkInputs();
+});
 
+function checkInputs() {
+    const nomecartaoValue = nomecartao.value;
+    const numerocartaoValue = numerocartao.value;
+    const cvvValue = cvv.value;    
+  //nome do cartão
+    if (nomecartaoValue === "") {
+      setErrorFor(nomecartao, "O nome do cartão é Obrigatorio.");
+    } else {
+      setSuccessFor(nomecartao);
+    }
+  //numero do cartao
+    if (numerocartaoValue === "") {
+      setErrorFor(numerocartao, "O numero do cartão é Obrigatorio.");
+    } else if (numerocartaoValue.length < 16 ) {
+      setErrorFor(numerocartao, "Por favor, insira um cartão válido (-16).");
+    } else if (numerocartaoValue.length > 16) { 
+        setErrorFor(numerocartao, "Por favor, insira um cartão válido (+16). ");
+    } else {
+      setSuccessFor(numerocartao);
+    }
+  //cvv do cartão
+    if (cvv === "") {
+      setErrorFor(cvv, "O cvv é Obrigatorio .");
+    } else if (cvvValue.length < 3) {
+      setErrorFor(cvv, "Menos que 3 caracteres.");
+    } else if (cvvValue.length > 3) {
+        setErrorFor(cvv, "Mais que 3 caracteres.");
+    } else {
+      setSuccessFor(cvv);
+    }
+    const formControls = form.querySelectorAll(".form-control");
+    const formIsValid = [...formControls].every((formControl) => {
+    return formControl.className === "form-control success";
+    });
+  
+    if (formIsValid) {
+      console.log("O formulário está 100% válido! \n", 
+      "nomecartao :" ,nomecartaoValue ,"\n",
+      "email :" ,numerocartaoValue ,"\n",
+      "cvv :" ,cvvValue ,"\n");
+      updatetotal();
+      alert("Compra realizada com Sucesso ");
+      limparcampo();
+      removeCartItem;
+      
+    }
+   
+  }
   //função para limpar os campos 
   function limparcampo(){
     nomecartao.value = "";
@@ -34,8 +87,7 @@ const bandeiracartao = document.getElementsByClassName("bandeira-cartao")
   
     // Adicionar a classe de sucesso
     formControl.className = "form-control success"; 
-  }
-
+}
 //abrir o carrinho ao clicar
 cartIcon.onclick = () => {
     cart.classList.add("active");
@@ -123,7 +175,6 @@ function addProductToCart(title, price, productImg){
     cartShopBox.getElementsByClassName("cart-remove")[0].addEventListener("click", removeCartItem);
     cartShopBox.getElementsByClassName("cart-quantity")[0].addEventListener("change", quantityChanged);
 } 
-
 // Atualizar o preço total
 function updatetotal(){
   var cartContent = document.getElementsByClassName("cart-content")[0];
