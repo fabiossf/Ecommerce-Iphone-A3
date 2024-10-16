@@ -1,0 +1,1 @@
+Versão Original do Aplicativo
